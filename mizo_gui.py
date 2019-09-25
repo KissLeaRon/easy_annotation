@@ -23,7 +23,7 @@ class ExampleWidget(QWidget):
 
   def initUI(self):
     self.setWindowTitle("Annotation")
-    self.mizo = QLabel("Mizotation tool v1.1.0",self)
+    self.mizo = QLabel("Mizotation tool v1.2.0",self)
     self.mizo.move(400,10)
     
     self.now = QLabel((DF["id_"][self.num]),self)
