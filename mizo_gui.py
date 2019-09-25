@@ -103,7 +103,8 @@ class ExampleWidget(QWidget):
       sys.exit(app.exec_())
     self.pixmap = QPixmap("./resized/{}".format(DF["id_"][self.num]))
     self.img.setPixmap(self.pixmap)
-    self.comment.setText(str(DF["caption"][self.num]))
+    com = str(DF["caption"][self.num])
+    self.comment.setText(com.replace("\\n",",<br>"))
     self.state()
     self.show()
 
