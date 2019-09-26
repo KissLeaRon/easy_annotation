@@ -140,7 +140,7 @@ class ExampleWidget(QWidget):
 
   def output(self):
     self.st = [cb.isChecked() for cb in self.checkbox]
-    buf = chain(DF["id_"][self.num], self.annotator, self.st)
+    buf = chain((DF["id_"][self.num], self.annotator), self.st)
     print(",".join(str(o) for o in buf), flush=True)
 
   def state(self):
