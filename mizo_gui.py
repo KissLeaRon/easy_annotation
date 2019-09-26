@@ -123,6 +123,7 @@ class ExampleWidget(QWidget):
     self.num += 1
     if self.num >= LENGTH:
       self.close()
+      return
     self.pixmap = QPixmap("./resized/{}".format(DF["id_"][self.num]))
     self.img.setPixmap(self.pixmap)
     com = str(DF["caption"][self.num])
