@@ -1,8 +1,11 @@
 import sys
+import os
+from itertools import chain
+
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMainWindow,QGridLayout,QLabel,QHBoxLayout,QVBoxLayout, QCheckBox,QRadioButton, QLineEdit, QMessageBox,QTextEdit
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import Qt
-import os
+
 import pandas as pd
 
 if len(sys.argv) <= 1:
@@ -25,7 +28,7 @@ class ExampleWidget(QWidget):
     self.setWindowTitle("Annotation")
     self.mizo = QLabel("Mizotation tool v1.2.0",self)
     self.mizo.move(400,10)
-    
+
     self.now = QLabel((DF["id_"][self.num]),self)
     self.now.move(30,30)
 
@@ -63,7 +66,7 @@ class ExampleWidget(QWidget):
     self.cb3.move(380,700)
     self.cb4 = QCheckBox("植物(オブジェクト)", self)
     self.cb4.move(380,730)
-    
+
     label3 = QLabel("全体について",self)
     label3.move(510,670)
     self.cb8 = QCheckBox("1:(自然)", self)
@@ -74,6 +77,21 @@ class ExampleWidget(QWidget):
     self.cb0.move(620,700)
     self.cb = QCheckBox("4:(その他)", self)
     self.cb.move(620,730)
+
+    self.checkbox = [
+        self.cb11,
+        self.cb22,
+        self.cb33,
+        self.cb44,
+        self.cb1,
+        self.cb2,
+        self.cb3,
+        self.cb4,
+        self.cb8,
+        self.cb9,
+        self.cb0,
+        self.cb,
+        ]
 
     go_next = QPushButton("Go Next",self)
     go_next.move(830,720)
@@ -104,14 +122,14 @@ class ExampleWidget(QWidget):
     self.output()
     self.num += 1
     if self.num >= LENGTH:
-      sys.exit(app.exec_())
+      self.close()
     self.pixmap = QPixmap("./resized/{}".format(DF["id_"][self.num]))
     self.img.setPixmap(self.pixmap)
     com = str(DF["caption"][self.num])
     self.comment.setText(com.replace("\\n",",<br>"))
     self.now.setText(DF["id_"][self.num])
     self.state()
-    self.show()
+    self.repaint()
 
   def onClicked(self):
     pass
@@ -119,38 +137,15 @@ class ExampleWidget(QWidget):
 
   def a(self):
     self.show()
-   
+
   def output(self):
-    self.st = [self.cb11.isChecked(),
-          self.cb22.isChecked(),
-          self.cb33.isChecked(),
-          self.cb44.isChecked(),
-          self.cb1.isChecked(),
-          self.cb2.isChecked(),
-          self.cb3.isChecked(),
-          self.cb4.isChecked(),
-          self.cb8.isChecked(),
-          self.cb9.isChecked(),
-          self.cb0.isChecked(),
-          self.cb.isChecked(),
-        ]
-    buf = [DF["id_"][self.num] , self.annotator] + list(map(str,self.st))
-    print(",".join(buf))
+    self.st = [cb.isChecked() for cb in self.checkbox]
+    buf = chain((DF["id_"][self.num], self.annotator), self.st)
+    print(",".join(str(o) for o in buf), flush=True)
 
   def state(self):
-    self.cb11.setCheckState(Qt.Unchecked)
-    self.cb22.setCheckState(Qt.Unchecked)
-    self.cb33.setCheckState(Qt.Unchecked)
-    self.cb44.setCheckState(Qt.Unchecked)
-    self.cb1.setCheckState(Qt.Unchecked)
-    self.cb2.setCheckState(Qt.Unchecked)
-    self.cb3.setCheckState(Qt.Unchecked)
-    self.cb4.setCheckState(Qt.Unchecked)
-    self.cb8.setCheckState(Qt.Unchecked)
-    self.cb9.setCheckState(Qt.Unchecked)
-    self.cb0.setCheckState(Qt.Unchecked)
-    self.cb.setCheckState(Qt.Unchecked)
-    self.show()
+    for btn in self.checkbox: btn.setCheckState(Qt.Unchecked)
+    self.update()
 
 if __name__ == "__main__":
   if(len(os.listdir("."))):
