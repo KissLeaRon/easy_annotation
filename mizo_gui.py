@@ -2,8 +2,14 @@ import sys
 import os
 from itertools import chain
 
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMainWindow,QGridLayout,QLabel,QHBoxLayout,QVBoxLayout, QCheckBox,QRadioButton, QLineEdit, QMessageBox,QTextEdit
-from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtWidgets import (QApplication, QWidget, QMainWindow,
+                             QGridLayout, QHBoxLayout,QVBoxLayout,
+                             QLabel, QLineEdit, QTextEdit,
+                             QPushButton, QCheckBox, QRadioButton,
+                             QMessageBox,
+                             QShortcut,
+                             )
+from PyQt5.QtGui import QPixmap, QImage, QKeySequence
 from PyQt5.QtCore import Qt
 
 import pandas as pd
@@ -43,6 +49,7 @@ class ExampleWidget(QWidget):
     self.comment.setText(com.replace("\\n","<br>"))
     self.comment.move(620,80)
     self.comment.resize(300,600)
+    self.comment.setReadOnly(True)
 
     self.label1 = QLabel("画像について",self)
     self.label1.move(20,670)
@@ -97,6 +104,7 @@ class ExampleWidget(QWidget):
     go_next.move(830,720)
 
     go_next.clicked.connect(self.paging)
+    go_next.setShortcut(QKeySequence("J"))
 
 
     self.textbox = QLineEdit(self)
@@ -104,11 +112,15 @@ class ExampleWidget(QWidget):
     self.label.move(700,692)
     self.textbox.move(780,690)
     self.textbox.textChanged[str].connect(self.onChanged)
+    self.textbox.editingFinished.connect(
+##        lambda: self.textbox.setReadOnly(True)
+        self.textbox.clearFocus
+        )
     self.show()
 
   def onChanged(self,text):
-    #self.label.setText(text)
-    #self.label.adjustSize()
+##    self.label.setText(text)
+##    self.label.adjustSize()
     self.annotator = text
 
   def paging(self):
@@ -131,9 +143,6 @@ class ExampleWidget(QWidget):
     self.now.setText(DF["id_"][self.num])
     self.state()
     self.repaint()
-
-  def onClicked(self):
-    pass
 
 
   def a(self):
