@@ -141,10 +141,10 @@ class ExampleWidget(QWidget):
   def output(self):
     self.st = [cb.isChecked() for cb in self.checkbox]
     buf = chain(DF["id_"][self.num], self.annotator, self.st)
-    print(",".join(buf), flush=True)
+    print(",".join(str(o) for o in buf), flush=True)
 
   def state(self):
-    for btn in self.checkbox: btn.setChecState(Qt.Unchecked)
+    for btn in self.checkbox: btn.setCheckState(Qt.Unchecked)
     self.update()
 
 if __name__ == "__main__":
