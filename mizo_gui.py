@@ -25,8 +25,8 @@ LENGTH = len(DF)
 
 class ExampleWidget(QWidget):
   def __init__(self):
-    self.num = 0
     super().__init__()
+    self.num = 0
     self.initUI()
     self.annotator = ""
 
@@ -157,9 +157,12 @@ class ExampleWidget(QWidget):
     for btn in self.checkbox: btn.setCheckState(Qt.Unchecked)
     self.update()
 
+def main()
+    if(len(os.listdir("."))):
+        pass
+    app = QApplication(sys.argv)
+    win = ExampleWidget()
+    sys.exit(app.exec_())
+
 if __name__ == "__main__":
-  if(len(os.listdir("."))):
-      pass
-  app = QApplication(sys.argv)
-  win = ExampleWidget()
-  sys.exit(app.exec_())
+    main()
